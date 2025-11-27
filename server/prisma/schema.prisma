@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+model specialists {
+  id                    String   @id @default(uuid()) @db.Uuid
+  average_rating        Decimal  @db.Decimal
+  is_draft              Boolean
+  total_number_of_ratings Int    // Native Int in PostgreSQL
+  title                 String
+  slug                  String
+  description           String   @db.Text
+  additional_offerings  String?   @db.Text
+  company_secretary     String?   @db.Text
+  base_price            Decimal  @db.Decimal
+  platform_fee          Decimal  @db.Decimal
+  final_price           Decimal  @db.Decimal
+  verification_status  String   // Assuming enum type as string for now
+  is_verified           Boolean
+  duration_days         Int      // Native Int in PostgreSQL
+  created_at            DateTime // Native DateTime in PostgreSQL
+  updated_at            DateTime // Native DateTime in PostgreSQL
+  deleted_at            DateTime? // Nullable DateTime
+
+  service_offerings     service_offerings[]
+  media                 media[]
+}
+
+model service_offerings {
+  id                   String   @id @default(uuid()) @db.Uuid
+  specialist_id        String   @db.Uuid
+  created_at           DateTime // Native DateTime in PostgreSQL
+  updated_at           DateTime // Native DateTime in PostgreSQL
+
+  specialists          specialists @relation(fields: [specialist_id], references: [id])
+}
+
+model platform_fee {
+  id                   String   @id @default(uuid()) @db.Uuid
+  tier_name            String   // Assuming enum type as string for now
+  min_value            Int      // Native Int in PostgreSQL
+  max_value            Int      // Native Int in PostgreSQL
+  platform_fee_percentage Decimal @db.Decimal
+  created_at           DateTime // Native DateTime in PostgreSQL
+  updated_at           DateTime // Native DateTime in PostgreSQL
+}
+
+model media {
+  id                   String   @id @default(uuid()) @db.Uuid
+  specialist_id        String   @db.Uuid
+  file_name            String
+  file_size            Int      // Native Int in PostgreSQL
+  display_order        Int      // Native Int in PostgreSQL
+  mime_type            String   // Assuming enum type as string for now
+  media_type           String   // Assuming enum type as string for now
+  uploaded_at          DateTime // Native DateTime in PostgreSQL
+  deleted_at           DateTime? // Nullable DateTime
+  created_at           DateTime // Native DateTime in PostgreSQL
+  updated_at           DateTime // Native DateTime in PostgreSQL
+
+  specialists          specialists @relation(fields: [specialist_id], references: [id])
+}
