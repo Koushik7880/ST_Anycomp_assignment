@@ -11,6 +11,6 @@ router.use("/specialists", specialistsRoutes);
 router.use("/specialists", serviceOfferingsRoutes);
 // router.use("/", mediaRoutes);
 router.use("/platform-fees", platformFeeRoutes);
-router.use("/specialists", mediaRoutes); // so final path = /api/specialists/:id/media
+router.use("/specialists", mediaRoutes); 
 
 export default router;

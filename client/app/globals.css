@@ -41,7 +41,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ===== Design tokens from Locofy ===== */
+
 
 :root {
   --font-size: 16px;
@@ -125,7 +125,7 @@
 
 @layer base {
   * {
-    /* This @apply now works because @theme makes `border-border` a real utility class */
+    
     @apply border-border; 
   }
 
@@ -134,11 +134,11 @@
     font-size: var(--font-size);
   }
 
-  /* Simple typography approximation of the Locofy rules */
+ 
   h1 {
     @apply text-2xl font-medium leading-[1.5];
   }
-  /* ... rest of h2-h4 and p/label styles ... */
+ 
   h2 {
     @apply text-xl font-medium leading-[1.5];
   }
@@ -158,11 +158,5 @@
     @apply text-base leading-[1.5];
   }
 
-  /* 
-    2. Remove this manual definition. It's no longer needed because @theme 
-    generates the actual utility class which @apply can use. 
-  */
-  /* .border-border {
-    border-color: var(--border); 
-  } */
+ 
 }
