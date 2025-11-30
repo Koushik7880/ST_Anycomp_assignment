@@ -1,4 +1,4 @@
-// client/src/lib/specialists.ts
+// client/lib/specialists.ts
 "use client";
 
 import { api } from "@/lib/api";
@@ -16,7 +16,7 @@ export interface SpecialistsListResponse {
   };
 }
 
-// 👇 All API calls go through this base path
+// 👇 Base path for backend route
 const SPECIALISTS_BASE = "/api/specialists";
 
 // Admin table list

@@ -8,34 +8,24 @@ import path from "path";
 
 const app = express();
 
-// 🔥 Global CORS: allow any origin (OK for this demo project)
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Methods",
-    "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS"
-  );
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
+// 🔥 Global CORS: allow any origin (good enough for this demo project)
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
+  })
+);
 
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(204);
-  }
-
-  next();
-});
-
-// (optional, but harmless)
-app.use(cors());
+// Handle preflight requests
+app.options("*", cors());
 
 app.use(express.json());
 
 // Serve static uploaded files
 app.use("/uploads", express.static(path.resolve(__dirname, "../uploads")));
 
-// Mount all API routes under /api
+// All API routes are mounted under /api
 app.use("/api", routes);
 
 app.use(notFoundHandler);
