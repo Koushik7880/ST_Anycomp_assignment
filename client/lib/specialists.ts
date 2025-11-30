@@ -1,4 +1,4 @@
-// client/lib/specialists.ts
+// client/src/lib/specialists.ts
 "use client";
 
 import { api } from "@/lib/api";
@@ -16,7 +16,10 @@ export interface SpecialistsListResponse {
   };
 }
 
-// Admin table list (you already had this – keep it)
+// 👇 All API calls go through this base path
+const SPECIALISTS_BASE = "/api/specialists";
+
+// Admin table list
 export async function fetchSpecialists(params: {
   status?: SpecialistsStatusFilter;
   search?: string;
@@ -30,7 +33,7 @@ export async function fetchSpecialists(params: {
     limit = 10,
   } = params;
 
-  const res = await api.get<SpecialistsListResponse>("/specialists", {
+  const res = await api.get<SpecialistsListResponse>(SPECIALISTS_BASE, {
     params: {
       status,
       search,
@@ -44,13 +47,13 @@ export async function fetchSpecialists(params: {
 
 /**
  * Public / store-front list of specialists that the customer can buy.
- * Uses the same /specialists endpoint but forces `status = "published"`.
+ * Uses the same endpoint but forces `status = "published"`.
  */
 export async function fetchPublishedSpecialists(
   page = 1,
   limit = 20
 ): Promise<{ data: Specialist[]; totalCount: number; totalPages: number }> {
-  const res = await api.get("/specialists", {
+  const res = await api.get<SpecialistsListResponse>(SPECIALISTS_BASE, {
     params: {
       status: "published",
       search: "",
@@ -60,7 +63,7 @@ export async function fetchPublishedSpecialists(
   });
 
   return {
-    data: res.data.data as Specialist[],
+    data: res.data.data,
     totalCount: res.data.meta.totalCount,
     totalPages: res.data.meta.totalPages,
   };
