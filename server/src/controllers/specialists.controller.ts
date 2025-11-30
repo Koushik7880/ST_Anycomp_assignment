@@ -319,7 +319,7 @@ export const exportSpecialists = async (req: Request, res: Response) => {
       return `"${str.replace(/"/g, '""')}"`;
     };
 
-    const rows = specialists.map((s) => [
+    const rows = specialists.map((s: { id: unknown; title: unknown; slug: unknown; description: unknown; base_price: unknown; platform_fee: unknown; final_price: unknown; duration_days: unknown; is_draft: any; verification_status: unknown; is_verified: unknown; total_number_of_ratings: unknown; average_rating: unknown; additional_offerings: any; company_secretary: any; created_at: unknown; updated_at: unknown; }) => [
       escape(s.id),
       escape(s.title),
       escape(s.slug),
@@ -340,7 +340,7 @@ export const exportSpecialists = async (req: Request, res: Response) => {
     ]);
 
     const csv =
-      headers.map(escape).join(",") + "\n" + rows.map((r) => r.join(",")).join("\n");
+      headers.map(escape).join(",") + "\n" + rows.map((r: any[]) => r.join(",")).join("\n");
 
     res.setHeader("Content-Type", "text/csv; charset=utf-8");
     res.setHeader(

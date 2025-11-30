@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const specialists_controller_1 = require("../controllers/specialists.controller");
+const router = (0, express_1.Router)();
+router.get("/", specialists_controller_1.listSpecialists);
+router.post("/", specialists_controller_1.createSpecialist);
+router.get("/:id", specialists_controller_1.getSpecialist);
+router.put("/:id", specialists_controller_1.updateSpecialist);
+router.patch("/:id/publish", specialists_controller_1.publishSpecialist);
+router.delete("/:id", specialists_controller_1.softDeleteSpecialist);
+router.get("/export", specialists_controller_1.exportSpecialists);
+exports.default = router;

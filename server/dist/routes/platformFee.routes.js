@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const platformFee_controller_1 = require("../controllers/platformFee.controller");
+const router = (0, express_1.Router)();
+router.get("/", platformFee_controller_1.listPlatformFees);
+router.post("/", platformFee_controller_1.createPlatformFee);
+router.put("/:id", platformFee_controller_1.updatePlatformFee);
+router.delete("/:id", platformFee_controller_1.deletePlatformFee);
+exports.default = router;

@@ -339,8 +339,7 @@ export default function SpecialistForm({ mode, initialData }: Props) {
               </Typography>
               <Typography className="!text-xs !text-gray-500 mb-1">
                 This section can display information about the professional or
-                company providing the service. For this assignment, it&apos;s a
-                static placeholder to match the Figma layout.
+                company providing the service.
               </Typography>
               <TextField
                 multiline
