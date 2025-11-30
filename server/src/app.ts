@@ -39,7 +39,7 @@ const app = express();
 // ----- CORS -----
 const allowedOrigins = [
   "http://localhost:3000",                       // local Next dev
-  process.env.CLIENT_URL,                        // Vercel URL (set on Render)
+  process.env.NEXT_PUBLIC_API_BASE_URL,                        // Vercel URL (set on Render)
 ].filter(Boolean) as string[];
 
 app.use(
