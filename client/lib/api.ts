@@ -1,13 +1,9 @@
-// src/lib/api.ts
+// client/src/lib/api.ts
 import axios from "axios";
-import { API_BASE_URL } from "@/config/constants";
 
-// remove any trailing slash just in case
-const normalizedBase = API_BASE_URL.replace(/\/+$/, "");
+const baseURL =
+  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:5000";
 
 export const api = axios.create({
-  baseURL: `${normalizedBase}/api`,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  baseURL,
 });

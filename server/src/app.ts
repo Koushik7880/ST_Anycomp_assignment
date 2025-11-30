@@ -7,25 +7,27 @@ import path from "path";
 
 const app = express();
 
-// ✅ Simple CORS: allow any origin (fine since you use tokenless / no cookies)
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://st-anycomp-assignment-client.vercel.app",
+];
+
 app.use(
   cors({
-    origin: true,           // reflect the Origin header
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    origin(origin, callback) {
+      if (!origin) return callback(null, true); // SSR, Postman, etc.
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error("Not allowed by CORS"));
+    },
   })
 );
 
-// Handle preflight
+// preflight
 app.options("*", cors());
 
 app.use(express.json());
 
-// Serve static uploaded files
-app.use(
-  "/uploads",
-  express.static(path.resolve(__dirname, "../uploads"))
-);
+app.use("/uploads", express.static(path.resolve(__dirname, "../uploads")));
 
 app.use("/api", routes);
 
