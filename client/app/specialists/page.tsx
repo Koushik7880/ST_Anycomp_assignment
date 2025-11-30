@@ -1,7 +1,7 @@
 // src/app/specialists/page.tsx
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import SpecialistsFilters from "@/components/specialists/SpecialistsFilters";
 import SpecialistsTable from "@/components/specialists/SpecialistsTable";
@@ -116,7 +116,13 @@ export default function SpecialistsPage() {
       </div>
 
       {/* ---------- FILTERS + TABLE ---------- */}
-      <SpecialistsFilters />
+      <Suspense
+        fallback={
+          <div className="mt-4 text-gray-500">Loading filters...</div>
+        }
+      >
+        <SpecialistsFilters />
+      </Suspense>
 
       {loading ? (
         <div className="mt-8 text-center text-gray-500">Loading...</div>
