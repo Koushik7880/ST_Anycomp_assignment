@@ -58,7 +58,7 @@ const uploadsDir = path.resolve(__dirname, "..", process.env.UPLOAD_DIR || "uplo
 app.use("/uploads", express.static(uploadsDir));
 
 // ----- API routes -----
-app.use("", routes);
+app.use("/api", routes);
 
 // Simple health check (handy for Render logs)
 app.get("/health", (_req, res) => {
