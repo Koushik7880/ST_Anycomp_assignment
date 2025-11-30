@@ -36,37 +36,43 @@ import path from "path";
 
 const app = express();
 
-// ----- CORS -----
+// ✅ allow local dev + Vercel domain
 const allowedOrigins = [
-  "http://localhost:3000",                       // local Next dev
-  process.env.NEXT_PUBLIC_API_BASE_URL,                        // Vercel URL (set on Render)
-].filter(Boolean) as string[];
+  "http://localhost:3000",
+  "https://st-anycomp-assignment-client.vercel.app",
+];
 
 app.use(
   cors({
-    origin: allowedOrigins.length ? allowedOrigins : true, // fallback: allow all
-    credentials: true,
+    origin(origin, callback) {
+      // SSR / Postman / curl (no origin) -> allow
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      // Anything else -> block
+      return callback(new Error("Not allowed by CORS"));
+    },
   })
 );
 
-// ----- Body parsing -----
+// Handle preflight
+app.options("*", cors());
+
 app.use(express.json());
 
-// ----- Static uploads -----
-// When compiled, __dirname = dist/, so ../uploads points to /server/uploads
-const uploadsDir = path.resolve(__dirname, "..", process.env.UPLOAD_DIR || "uploads");
-app.use("/uploads", express.static(uploadsDir));
+// Serve static uploaded files
+app.use(
+  "/uploads",
+  express.static(path.resolve(__dirname, "../uploads"))
+);
 
-// ----- API routes -----
 app.use("/api", routes);
 
-// Simple health check (handy for Render logs)
-app.get("/health", (_req, res) => {
-  res.json({ status: "ok" });
-});
-
-// ----- Error handlers -----
 app.use(notFoundHandler);
 app.use(errorHandler);
 
 export default app;
+
