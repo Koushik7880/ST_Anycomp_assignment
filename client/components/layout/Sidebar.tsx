@@ -17,11 +17,11 @@ export function Sidebar() {
 
   const menuItems = [
     { href: "/specialists", label: "Specialists", icon: Users },
-    { href: "/clients", label: "Clients", icon: Users },
-    { href: "/service-orders", label: "Service Orders", icon: FileText },
-    { href: "/esignature", label: "eSignature", icon: PenTool },
-    { href: "/messages", label: "Messages", icon: MessageSquare },
-    { href: "/invoices", label: "Invoices & Receipts", icon: Receipt },
+    // { href: "/clients", label: "Clients", icon: Users },
+    // { href: "/service-orders", label: "Service Orders", icon: FileText },
+    // { href: "/esignature", label: "eSignature", icon: PenTool },
+    // { href: "/messages", label: "Messages", icon: MessageSquare },
+    // { href: "/invoices", label: "Invoices & Receipts", icon: Receipt },
   ];
 
   return (
