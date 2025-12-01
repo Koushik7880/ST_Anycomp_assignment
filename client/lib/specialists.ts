@@ -1,4 +1,3 @@
-// client/lib/specialists.ts
 "use client";
 
 import { api } from "@/lib/api";
@@ -16,8 +15,8 @@ export interface SpecialistsListResponse {
   };
 }
 
-// 👇 All backend calls for specialists use this base
-const SPECIALISTS_BASE = "/api/specialists";
+// Backend base path is /api, so only use /specialists here
+const SPECIALISTS_BASE = "/specialists";
 
 /**
  * Admin table list
@@ -28,29 +27,19 @@ export async function fetchSpecialists(params: {
   page?: number;
   limit?: number;
 }): Promise<SpecialistsListResponse> {
-  const {
-    status = "published",
-    search = "",
-    page = 1,
-    limit = 10,
-  } = params;
+  const { status = "published", search = "", page = 1, limit = 10 } = params;
 
   const res = await api.get<SpecialistsListResponse>(SPECIALISTS_BASE, {
     params: { status, search, page, limit },
   });
 
-  // backend is expected to respond with { data, meta }
   return res.data;
 }
 
 /**
- * Public / store-front list of specialists.
- * Returns flattened helper shape.
+ * Public list
  */
-export async function fetchPublishedSpecialists(
-  page = 1,
-  limit = 20
-): Promise<{ data: Specialist[]; totalCount: number; totalPages: number }> {
+export async function fetchPublishedSpecialists(page = 1, limit = 20) {
   const res = await api.get<SpecialistsListResponse>(SPECIALISTS_BASE, {
     params: {
       status: "published",
@@ -68,23 +57,20 @@ export async function fetchPublishedSpecialists(
 }
 
 /**
- * Create new specialist
+ * Create specialist
  */
-export async function createSpecialist(formData: FormData): Promise<Specialist> {
-  const res = await api.post<Specialist>(SPECIALISTS_BASE, formData, {
+export async function createSpecialist(formData: FormData) {
+  const res = await api.post(SPECIALISTS_BASE, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return res.data;
 }
 
 /**
- * Update existing specialist
+ * Update specialist
  */
-export async function updateSpecialist(
-  id: string,
-  formData: FormData
-): Promise<Specialist> {
-  const res = await api.put<Specialist>(`${SPECIALISTS_BASE}/${id}`, formData, {
+export async function updateSpecialist(id: string, formData: FormData) {
+  const res = await api.put(`${SPECIALISTS_BASE}/${id}`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return res.data;
@@ -93,12 +79,12 @@ export async function updateSpecialist(
 /**
  * Delete specialist
  */
-export async function deleteSpecialist(id: string): Promise<void> {
+export async function deleteSpecialist(id: string) {
   await api.delete(`${SPECIALISTS_BASE}/${id}`);
 }
 
 /**
- * Export specialists to CSV/Excel (if you use this route)
+ * Export specialists
  */
 export async function exportSpecialists(params: {
   status?: SpecialistsStatusFilter;
