@@ -16,10 +16,12 @@ export interface SpecialistsListResponse {
   };
 }
 
-// 👇 Base path for backend route
+// 👇 All backend calls for specialists use this base
 const SPECIALISTS_BASE = "/api/specialists";
 
-// Admin table list
+/**
+ * Admin table list
+ */
 export async function fetchSpecialists(params: {
   status?: SpecialistsStatusFilter;
   search?: string;
@@ -34,20 +36,16 @@ export async function fetchSpecialists(params: {
   } = params;
 
   const res = await api.get<SpecialistsListResponse>(SPECIALISTS_BASE, {
-    params: {
-      status,
-      search,
-      page,
-      limit,
-    },
+    params: { status, search, page, limit },
   });
 
+  // backend is expected to respond with { data, meta }
   return res.data;
 }
 
 /**
- * Public / store-front list of specialists that the customer can buy.
- * Uses the same endpoint but forces `status = "published"`.
+ * Public / store-front list of specialists.
+ * Returns flattened helper shape.
  */
 export async function fetchPublishedSpecialists(
   page = 1,
@@ -67,4 +65,51 @@ export async function fetchPublishedSpecialists(
     totalCount: res.data.meta.totalCount,
     totalPages: res.data.meta.totalPages,
   };
+}
+
+/**
+ * Create new specialist
+ */
+export async function createSpecialist(formData: FormData): Promise<Specialist> {
+  const res = await api.post<Specialist>(SPECIALISTS_BASE, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return res.data;
+}
+
+/**
+ * Update existing specialist
+ */
+export async function updateSpecialist(
+  id: string,
+  formData: FormData
+): Promise<Specialist> {
+  const res = await api.put<Specialist>(`${SPECIALISTS_BASE}/${id}`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return res.data;
+}
+
+/**
+ * Delete specialist
+ */
+export async function deleteSpecialist(id: string): Promise<void> {
+  await api.delete(`${SPECIALISTS_BASE}/${id}`);
+}
+
+/**
+ * Export specialists to CSV/Excel (if you use this route)
+ */
+export async function exportSpecialists(params: {
+  status?: SpecialistsStatusFilter;
+  search?: string;
+}) {
+  const { status = "all", search = "" } = params;
+
+  const res = await api.get(`${SPECIALISTS_BASE}/export`, {
+    params: { status, search },
+    responseType: "blob",
+  });
+
+  return res.data;
 }
