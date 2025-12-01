@@ -6,22 +6,17 @@ interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
-
 const navItems = [
-  { href: "/specialists", label: "Specialists" },
-  // You can re-enable these once you create the pages:
-  // { href: "/clients", label: "Clients" },
-  // { href: "/service-orders", label: "Service Orders" },
-  // { href: "/esignature", label: "eSignature" },
-  // { href: "/messages", label: "Messages" },
-  // { href: "/invoices", label: "Invoices & Receipts" },
+  { href: "/specialists", label: "Specialists" }
 ];
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen bg-[#f4f4f6] text-[#222222] flex">
+
       {/* LEFT SIDEBAR */}
       <aside className="w-64 bg-[#0c1b3f] text-white flex flex-col">
+
         {/* Company / profile header */}
         <div className="px-6 py-5 border-b border-white/10">
           <div className="text-xs opacity-70">Profile</div>
@@ -37,6 +32,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             <Link
               key={item.href}
               href={item.href}
+              prefetch={false}   {/* 🔥 MUST ADD TO STOP PREFETCH */}
               className="flex items-center gap-2 rounded-md px-4 py-2 hover:bg-white/10"
             >
               <span className="h-3 w-3 rounded-sm bg-white/60" />
@@ -56,7 +52,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         </div>
       </aside>
 
-      {/* RIGHT SIDE: TOP BAR + CONTENT */}
+      {/* RIGHT SIDE CONTENT */}
       <div className="flex-1 flex flex-col">
         <header className="h-16 border-b bg-white flex items-center justify-between px-8">
           <div>
