@@ -1,14 +1,20 @@
 // server/src/app.ts
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
+import path from "path";
+
 import routes from "./routes";
 import { notFoundHandler } from "./middleware/notFound";
 import { errorHandler } from "./middleware/errorHandler";
-import path from "path";
 
 const app = express();
 
-// 🔥 Simple global CORS middleware (no express-cors, no "*" route needed)
-app.use((req: { method: string; }, res: { header: (arg0: string, arg1: string) => void; sendStatus: (arg0: number) => any; }, next: () => void) => {
+/**
+ * 🔥 Simple global CORS middleware
+ * - No `app.options("*", ...)` so no path-to-regexp issues on Express 5
+ * - Allows all origins (good for this assignment)
+ *   If you want to restrict later, we can change this.
+ */
+app.use((req: Request, res: Response, next: NextFunction) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Methods",
@@ -27,14 +33,23 @@ app.use((req: { method: string; }, res: { header: (arg0: string, arg1: string) =
   next();
 });
 
+// Body parsing
 app.use(express.json());
 
 // Serve static uploaded files
+// At runtime, __dirname = /server/dist
+// "../uploads" => /server/uploads
 app.use("/uploads", express.static(path.resolve(__dirname, "../uploads")));
 
 // All API routes under /api
 app.use("/api", routes);
 
+// Simple health check (useful for Render)
+app.get("/health", (_req: Request, res: Response) => {
+  res.json({ status: "ok" });
+});
+
+// 404 + error handlers
 app.use(notFoundHandler);
 app.use(errorHandler);
 

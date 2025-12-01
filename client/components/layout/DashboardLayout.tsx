@@ -6,13 +6,15 @@ interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
+
 const navItems = [
   { href: "/specialists", label: "Specialists" },
-  { href: "/clients", label: "Clients" },
-  { href: "/service-orders", label: "Service Orders" },
-  { href: "/esignature", label: "eSignature" },
-  { href: "/messages", label: "Messages" },
-  { href: "/invoices", label: "Invoices & Receipts" },
+  // You can re-enable these once you create the pages:
+  // { href: "/clients", label: "Clients" },
+  // { href: "/service-orders", label: "Service Orders" },
+  // { href: "/esignature", label: "eSignature" },
+  // { href: "/messages", label: "Messages" },
+  // { href: "/invoices", label: "Invoices & Receipts" },
 ];
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
@@ -24,7 +26,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         <div className="px-6 py-5 border-b border-white/10">
           <div className="text-xs opacity-70">Profile</div>
           <div className="mt-1 font-semibold text-sm">Gwen Lam</div>
-          <div className="text-[11px] opacity-70">ST Comp Holdings Sdn Bhd</div>
+          <div className="text-[11px] opacity-70">
+            ST Comp Holdings Sdn Bhd
+          </div>
         </div>
 
         {/* Main nav */}
@@ -43,8 +47,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 
         {/* Bottom items */}
         <div className="px-4 py-4 border-t border-white/10 text-xs space-y-2">
-          <button className="block w-full text-left hover:underline">Help</button>
-          <button className="block w-full text-left hover:underline">Settings</button>
+          <button className="block w-full text-left hover:underline">
+            Help
+          </button>
+          <button className="block w-full text-left hover:underline">
+            Settings
+          </button>
         </div>
       </aside>
 
